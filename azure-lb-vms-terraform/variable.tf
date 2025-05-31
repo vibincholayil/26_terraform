@@ -1,11 +1,21 @@
 variable "location" {
-  default = "uk south"
+  default = "UK South"
 }
 
 variable "resource_group_name" {
-  default = "lb-demo-rg"
+  default = "learning"
 }
 
 variable "vm_count" {
   default = 2
+}
+
+variable "username" {
+  default = "learning"
+  
+}
+
+variable "password" {
+  default = "Redhat@12345"
+  
 }

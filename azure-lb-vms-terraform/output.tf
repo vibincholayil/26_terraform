@@ -34,9 +34,7 @@ output "network_interface_ids" {
   value = azurerm_network_interface.nic_learning[*].id
 }
 
-output "virtual_machine_ids" {
-  value = azurerm_linux_virtual_machine.vm_learning[*].id
-}
+
 
 output "virtual_machine_private_ips" {
   value = [

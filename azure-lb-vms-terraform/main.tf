@@ -64,7 +64,7 @@ resource "azurerm_lb_probe" "health_probe" {
 # Nic
 
 resource "azurerm_network_interface" "nic_learning" {
-  name                = "nic_learning"
+  name                = "nic-learning-vibin-${count.index + 1}"
   location            = var.location
   resource_group_name = var.resource_group_name
   count = var.vm_count
@@ -78,15 +78,16 @@ resource "azurerm_network_interface" "nic_learning" {
 
 # Virtual Machines
 
-resource "azurerm_linux_virtual_machine" "vm_learning" {
-  name                = "vm_learning"
+resource "azurerm_linux_virtual_machine" "vm" {
+  name                = "vm-learning-vibin-${count.index + 1}"
   resource_group_name = var.resource_group_name
   location            = var.location
-  size                = "Standard_F2"
+  size                = "Standard_B1s"
   admin_username      = var.username
   admin_password      = var.password
+  count = var.vm_count
   disable_password_authentication = false
-  network_interface_ids = azurerm_network_interface.nic_learning[*].id
+  network_interface_ids = [azurerm_network_interface.nic_learning[count.index].id]
 
 
   os_disk {
@@ -100,6 +101,8 @@ resource "azurerm_linux_virtual_machine" "vm_learning" {
     sku       = "22_04-lts"
     version   = "latest"
   }
+
+  custom_data = base64encode("#!/bin/bash\nsudo apt-get update\nsudo apt-get install -y nginx\nsudo systemctl start nginx")
 }
 
 
